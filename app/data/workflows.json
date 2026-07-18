@@ -1,0 +1,38 @@
+[
+  {
+    "id": "order-lab",
+    "name": "Order lab / bloods",
+    "description": "Place an order for a laboratory test or panel (e.g. repeat Troponin I, Full Blood Count, U&Es, COVID PCR).",
+    "category": "orders"
+  },
+  {
+    "id": "ecg",
+    "name": "Obtain 12-lead ECG",
+    "description": "Order and record a 12-lead ECG to assess for ischaemic or dynamic changes.",
+    "category": "orders"
+  },
+  {
+    "id": "cardiac-monitoring",
+    "name": "Initiate cardiac monitoring",
+    "description": "Start continuous cardiac (telemetry) monitoring given suspected acute coronary syndrome.",
+    "category": "monitoring"
+  },
+  {
+    "id": "specialty-consult",
+    "name": "Request Cardiology review",
+    "description": "Request a specialty consult or review (e.g. Cardiology review for a raised troponin / suspected ACS).",
+    "category": "specialty_input"
+  },
+  {
+    "id": "medication-administer",
+    "name": "Administer medication (clinician-gated)",
+    "description": "Prepare a drug and dose for administration (e.g. aspirin 300 mg loading dose, enoxaparin 1 mg/kg). Every drug and dose is confirmed by the clinician before it is administered.",
+    "category": "medication"
+  },
+  {
+    "id": "reassess-recheck",
+    "name": "Schedule reassessment / recheck",
+    "description": "Schedule a clinical reassessment or re-evaluate after intervention (e.g. review the repeat Troponin I once it returns).",
+    "category": "monitoring"
+  }
+]

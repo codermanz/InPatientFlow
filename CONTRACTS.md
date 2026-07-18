@@ -101,6 +101,12 @@ All responses `application/json`. Errors: `{ error: string }` with proper status
 | 11| `POST /api/results/:id/act` | `{ actionIds: string[] }` | `{ timeline: TimelineEvent[] }` |
 | 12| `GET /api/patients/:id/timeline` | — | `{ timeline: TimelineEvent[] }` |
 | 13| `GET /api/activity` | — | `{ completedQuietly:number; needsAttention:number; resultPending:number }` |
+| 14| `POST /api/patients/:id/recommend` | `{ concern?: string }` | `{ suggestion: Suggestion }` **REAL Claude (ReAct)** — proactive recommendation powering screen 4 (Agent Recommendation) |
+| 15| `GET /api/workflows` | — | `{ workflows: WorkflowDef[] }` — the 6 pre-defined stubbed workflows |
+| 16| `POST /api/workflows/run` | `{ workflowId: string; actionId?: string; patientId: string }` | `{ run: WorkflowRun }` — kicks off a (stubbed) workflow; also appends a `workflow` TimelineEvent |
+| 17| `GET /api/patients/:id/workflow-runs` | — | `{ runs: WorkflowRun[] }` — workflows triggered for this patient |
+
+**Workflow catalog (data/workflows.json, 6):** `order-lab`, `electrolyte-replacement`, `medication-hold`, `cardiac-monitoring`, `specialty-consult`, `reassess-recheck`. Each `SuggestedAction` the agent emits (screens 4 & 9) carries a `workflowId` chosen from this catalog; the UI shows a "Trigger" affordance that POSTs `/workflows/run`. Stubbed: a run returns `{runId, status:'triggered'}` and shows in the timeline.
 
 ## 3. Intelligence contract (the REAL part) — HYBRID
 Two functions in `/server/src/intel`. Both **cache to `/data/cache/<key>.json`** keyed by a hash of the input; on cache hit, replay (deterministic demo). `INTEL_MODE=live|cached|auto` (default `auto`: use cache if present else call + write). Model: default `claude-sonnet-5`, overridable via `INTEL_MODEL=claude-opus-4-8`. Confirm exact SDK params (`tools`, `tool_choice`, agent loop) against the **claude-api skill** at build time.
@@ -121,7 +127,20 @@ Two functions in `/server/src/intel`. Both **cache to `/data/cache/<key>.json`**
   - `emit_suggestion(suggestion: Suggestion) → done`   // TERMINAL, schema = §1 Suggestion
 - Seed input handed to the agent up front: the `ResultEvent` (value/prior/range/status) + originating `Task` + patient one-liner. Everything else it must fetch via tools.
 - Output: `Suggestion` — `headline` (why review needed), `summary`, `proposedActions[]` (each cites the tool result it came from), `evidence[]` (populated from the tool calls the agent made), `guardrails[]`.
-- Prompt rules (**safety, hard**): explain why review matters; **NO diagnosis, NO autonomous prescribing** (say "medication review needed", never a specific new drug/dose); every action carries evidence; clinician confirms.
+- Prompt rules (**safety, hard**): explain why review matters; **NO final diagnosis presented as fact, NO autonomous prescribing / order placement**; clinician confirms every action.
+- **Assertiveness = BALANCED (locked).** The agent SHOULD be clinically specific at the *action* level: recommend concrete therapeutic actions (e.g. "replace potassium per protocol", "hold furosemide pending review", "recheck K⁺ in 2–4h", "consider ECG monitoring"), and may cite the hospital protocol/guidance for dosing. It frames the clinical picture as a *concern* ("consistent with / concern for hypokalemia"), not a stamped final diagnosis, and never emits a specific drug+dose prescription or auto-places an order. This matches mock screens 4 & 9.
+
+### 3.4 Trace, anomaly, workflows, brevity (applies to 3.1–3.3)
+- **Trace = evidence.** Both ReAct calls (3.2, 3.3) must capture the agent's actual tool-call trace as `Suggestion.trace: TraceStep[]` (order, tool, human-readable input, short finding). `evidence[]` is derived from the trace. The UI displays the trace as "what the agent checked".
+- **Anomaly (screen 9 / suggestNextSteps):** set `Suggestion.anomaly = { detected:true, description }` — the agent explicitly determines the returned result is an anomaly, and that determination is why it produced recommendations.
+- **Workflows via DISCOVERY TOOLS (locked architecture).** The ReAct agent is given `search_workflows(query)` and `get_workflow(id)` tools and QUERIES the catalog to bind each action to a real `workflowId` itself (these discovery calls are recorded in `trace`). Keyword-map is a backend fallback only. Single reasoning agent (no second agent). The agent may DISCOVER + RECOMMEND workflows but NEVER triggers them — execution is gated on clinician approval and run by the deterministic backend orchestrator.
+- **Closed loop (locked).** After the clinician approves + triggers workflows, a `reassess-recheck`/`order-lab` workflow returns a SCRIPTED improved recheck (K⁺ 2.9 → 3.3, improving); the agent is re-invoked for a brief re-assessment ("K improving, continue monitoring, no further action") appended to the monitoring timeline (screens 10/11). Endpoint: `POST /api/workflows/:runId/complete` (or auto after delay) → produces the recheck result + agent re-assessment.
+- **No fluff:** drop generic filler actions (e.g. "escalate to senior", "document plan", vague "assess"). Keep concrete, workflow-backed clinical actions only.
+- **Brevity:** extraction (3.1) task `title`s must be concise (≤ ~6 words, imperative); recommendation/suggestion `headline` must be ONE short line; detail lives in `summary`/`detail`.
+
+### 3.3 `recommendProactive(patientId, concern) → Suggestion` — ReAct AGENT (screen 4)
+- Same ReAct engine + tools + guardrails as 3.2, but the seed trigger is a *concern* (declining-K trend during diuresis, "no corrective order found") instead of a returned `ResultEvent`. Powers endpoint 14 / screen 4's "Agent Recommendation".
+- Proposed actions should align with the mock: start electrolyte replacement (per protocol), order a repeat metabolic panel, re-evaluate when the result is finalized — each evidence-cited. Cached like the others.
 - **Note for Data agent:** `hero.json`/`scripted.json` must expose enough that the tools return meaningful data for Maria — a K⁺ observation trend, an active loop diuretic in meds, an assessment section mentioning diuresis, and a `get_local_guidance('hypokalemia'|'escalation')` protocol snippet.
 
 ## 4. Seed / data spec (Data agent)
@@ -145,3 +164,48 @@ Two functions in `/server/src/intel`. Both **cache to `/data/cache/<key>.json`**
 ## 5. Definition of done (Integration agent)
 Full loop runs on one machine, deterministic, matching the 11 mock screens:
 ward → Maria → extract (real) → confirm → execute → (timer or /sim/advance) → notification → result → suggest (real) → act → timeline. Cached LLM outputs committed so it never fails on stage.
+
+---
+
+# v2 — TROPONIN / ACS SCENARIO (supersedes scenario-specific details above)
+
+The mock (`Demo_Flow.png`) was redesigned: **8 screens**, chest-pain / raised-troponin scenario, patients by **Hospital No.** (no names). Endpoints (§2), the ReAct engine + discovery tools + closed loop (§3), cache, and sim all carry over. Only scenario data, prompts, and the frontend change.
+
+## Hero scenario
+- Patient: **Hospital No. 1234567**, **Bed 12**, initials **JS**, presenting **SOB + Chest Pain**, NEWS 2, PMH HTN/IHD/Scoliosis, allergy Nuts, meds Lisinopril/Aspirin.
+- Result: **Troponin I 4274 ng/L (High)**, ref `< 14 ng/L`, at 11:47. Interpretation: "Markedly raised troponin I in the context of chest pain." (a finding interpretation, NOT a diagnosis).
+- Closed loop: **Repeat Troponin I** (pending → returns) drives monitoring.
+
+## 8 screens
+1. **Overview** — Ward 7A, "Sat, 18 May 09:20", 2 stats (18 Patients / 37 Tasks), patient rows (Hospital No + N tasks + red/amber/green dot), tabs: **Overview / Alerts / More**.
+2. **Patient Summary** — flattened cards: Presenting complaint, NEWS, Investigations, PMH, Allergies, Medications, Tasks(→).
+3. **Tasks Requested** — FLAT list (no categories), each with status chip (Requested / Chased): COVID PCR, Chest X-Ray, FBC(U&Es), Troponin I (Reason: Chest pain), ECG (Chased). "Next update ~10 min". **REAL extraction.**
+4. **Critical Alert** — dark lock screen, 11:47, RED urgent banner "Needs urgent attention – Troponin / Hospital No. 1234567". (poll /notifications; manual /sim/advance override.)
+5. **Raised Troponin Result** — pink card: Troponin I **4274 ng/L** (red) + High badge + ref + time; Interpretation card; "View Full Results".
+6. **AI Suggestions** — Suggested Next Steps (each icon+row→detail): Repeat Troponin I in 3h, 12-Lead ECG, Cardiology Review, **Aspirin 300 mg (if no contraindication)**; buttons Evidence | Modify; "Add to Plan"; footer "based on trust guidelines and clinical context". **REAL ReAct** (trace = evidence; workflow-discovery; anomaly).
+7. **Confirm Next Steps** — checklist of the above; **Confirm & Execute** → triggers workflows.
+8. **Monitoring** — Timeline (Troponin I initial 4274/11:47 [red]; Repeat Troponin I Pending 14:45; 12-Lead ECG Completed 11:52; Cardiology Review Completed 12:10) + **Actions Taken** (Aspirin loading 300 mg prescribed; Enoxaparin 1 mg/kg prescribed). Closed loop surfaces the repeat-troponin re-assessment here.
+
+## Data to re-author
+- `ward.json`: ward "Ward 7A", date "Sat, 18 May 09:20", counts {patients:18, tasks:37}, roster (hospitalNo/bed/initials/taskCount/status): JS 1234567/Bed 12/5/need_action(HERO); SA 2345678/2/need_review; MJ 3456789/0/unchanged; DB 4567890/3/need_review.
+- `hero.json`: JS chest-pain admission — encounter (presentingComplaint, news "2", investigations, pmh, allergies, medications), a note whose A&P documents the requested tasks (COVID PCR, CXR, FBC/U&Es, Troponin I [reason chest pain], ECG), transcript, chart (troponin trend incl 4274, ECG, vitals, meds, guidance for ACS/chest-pain), so REAL extraction yields the flat task list.
+- `scripted.json`: resultEvent Troponin I 4274 High + interpretation; notification urgent "Needs urgent attention – Troponin"; monitoring timeline (with `note` values/statuses); actionsTaken[]; recheck = repeat troponin (e.g. still elevated / trend) for the closed loop.
+- `workflows.json`: ACS catalog, e.g. `order-lab` (repeat troponin / bloods), `ecg` (12-lead ECG), `cardiac-monitoring`, `specialty-consult` (Cardiology), `medication-administer` (aspirin/enoxaparin — drug+dose, clinician-gated), `reassess-recheck`.
+
+## Entity notes
+- Patient by hospitalNo+bed+initials (name internal). Status dot: need_action→red, need_review→amber, unchanged→green.
+- Tasks FLAT; status chips `requested`/`chased`.
+- Encounter carries news/pmh/allergies/medications/investigations.
+- ResultEvent.interpretation shown on screen 5.
+- TimelineEvent.note carries the right-aligned value/status.
+- `GET /patients/:id/timeline` response adds `actionsTaken: string[]`.
+
+## Assertiveness — DRUG+DOSE ALLOWED, clinician-gated (locked, supersedes earlier "balanced")
+The agent MAY suggest specific drugs+doses (e.g. "Aspirin 300 mg (if no contraindication)"); it still frames the picture as a finding/concern (no final diagnosis), and NOTHING is "prescribed"/executed until the clinician taps **Confirm & Execute**. Guardrails now read as decision-support + human-in-the-loop (clinician confirms every drug/dose). Add a subtle "Clinician-confirmed · decision support · synthetic" framing in the UI.
+
+## Palette (match Demo_Flow.png — frontend: Read the PNG and refine)
+- Primary deep pine green (buttons, active tab, logo): ~`#1E4635` (buttons), logo ~`#2E6E4E`.
+- Critical red (alert banner, high value, High badge): ~`#C43B2E`; result card pink bg ~`#FCEBEA`.
+- Status dots: red `#DB4A3D`, amber `#E0A33A`, green `#3E8E5A`. "Chased" row bg light green ~`#EAF3EC`.
+- Neutrals: page bg `#F5F6F5`, cards `#FFFFFF`, border `#ECEEEC`, text `#1A1A1A`, secondary `#7A8377`.
+- Lock/critical screen: dark green gradient ~`#12291F → #0C1E17`.

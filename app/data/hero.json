@@ -1,0 +1,163 @@
+{
+  "patient": {
+    "id": "pt-1234567",
+    "hospitalNo": "1234567",
+    "bed": "Bed 12",
+    "initials": "JS",
+    "ageSex": "58M",
+    "name": "John Stephens",
+    "ward": "Ward 7A",
+    "specialty": "Cardiology",
+    "status": "need_action",
+    "taskCount": 5
+  },
+  "encounter": {
+    "id": "enc-js-1234567",
+    "patientId": "pt-1234567",
+    "date": "2026-05-18T09:20:00-07:00",
+    "visitTitle": "Acute admission — chest pain and shortness of breath",
+    "visitType": "Acute medical admission",
+    "summary": "58M presenting with central chest pain and shortness of breath on a background of HTN and IHD. Admission bloods and imaging requested; troponin pending on arrival.",
+    "presentingComplaint": "SOB + Chest Pain",
+    "news": "2",
+    "investigations": [
+      { "label": "CXR", "value": "Normal" },
+      { "label": "Bloods", "value": "Pending" }
+    ],
+    "pmh": ["HTN", "IHD", "Scoliosis"],
+    "allergies": ["Nuts"],
+    "medications": ["Lisinopril", "Aspirin"],
+    "keyInvestigations": [
+      { "label": "Troponin I", "value": "Pending" },
+      { "label": "ECG", "value": "Requested" }
+    ],
+    "assessment": "Central chest pain with shortness of breath on a background of ischaemic heart disease and hypertension — acute coronary syndrome must be excluded. NEWS 2 on arrival, haemodynamically stable.",
+    "planText": "Order COVID PCR, Chest X-Ray, Full Blood Count with U&Es, Troponin I and a 12-lead ECG."
+  },
+  "note": "**Acute Admission Note — Medical Admissions Unit**\n_Patient: Hospital No. 1234567 · Bed 12 · 58M · 2026-05-18 09:20_\n\n**Subjective:** 58-year-old man presenting with a two-hour history of central, tight chest pain radiating to the left arm, associated with shortness of breath and mild sweating. Background of hypertension and ischaemic heart disease. Reports a nut allergy. Currently on lisinopril and aspirin at home. Pain partially eased since arrival; still short of breath on exertion.\n\n**Objective:** NEWS 2. Vitals: HR 92/min, BP 148/88 mmHg, RR 20/min, SpO2 95% on room air, Temp 36.8°C. Chest clear to auscultation. Heart sounds normal, no murmurs. Chest X-Ray reviewed — normal, no acute changes. Admission bloods sent and pending. Troponin I pending on the initial sample.\n\n**Assessment and Plan:**\n\n### Central chest pain — ?acute coronary syndrome, background IHD\nCentral chest pain with shortness of breath on a background of ischaemic heart disease and hypertension. Acute coronary syndrome must be excluded. Haemodynamically stable, NEWS 2.\n- Send a Troponin I on the initial sample (reason: chest pain) to assess for myocardial injury.\n- Obtain a 12-lead ECG now to look for ischaemic changes.\n- Order a Full Blood Count with U&Es to check baseline haematology and renal function before contrast or anticoagulation.\n\n### Shortness of breath — exclude infective / respiratory contribution\nShort of breath on exertion; chest clear but breathlessness warrants screening given the current admission pathway.\n- Order a COVID PCR swab as part of the acute admission screen.\n- Order a Chest X-Ray to exclude an acute respiratory cause (reviewed — reported normal).\n\n**Return precautions:** escalate immediately for a raised troponin, ongoing or worsening chest pain, dynamic ECG changes, or any rise in NEWS.",
+  "transcript": "DR: Morning — I understand you've had chest pain since this morning?\nPT: Yes, doctor. Tight, central, going into my left arm. And I've been quite short of breath with it.\nDR: Any history I should know about?\nPT: I've got high blood pressure and I've had heart trouble before — ischaemic heart disease. I take lisinopril and aspirin. And I'm allergic to nuts.\nDR: Thank you. Your NEWS is 2 and you're stable, but given the chest pain and your cardiac history we need to rule out a heart attack.\nDR: Let's send a Troponin I on this first sample — that's the marker for heart muscle damage — the reason being the chest pain. And get a 12-lead ECG done now.\nNURSE: Troponin I on the initial sample and a 12-lead ECG, understood.\nDR: Also send a Full Blood Count with U&Es so we've got baseline bloods and kidney function.\nNURSE: FBC and U&Es, got it.\nDR: And as part of the admission screen, please add a COVID PCR swab, and a Chest X-Ray to make sure there's nothing in the lungs.\nNURSE: COVID PCR and Chest X-Ray as well.\nDR: Good. Let's get those five sent and I'll review the results.\nPT: Thank you, doctor.",
+  "chart": {
+    "observations": [
+      {
+        "name": "Troponin I",
+        "loinc": "89579-7",
+        "value": "4274",
+        "unit": "ng/L",
+        "time": "2026-05-18T11:47:00-07:00",
+        "status": "final"
+      },
+      {
+        "name": "12-Lead ECG",
+        "loinc": "11524-6",
+        "value": "Sinus rhythm with minor ST-T changes in the anterior leads",
+        "time": "2026-05-18T11:52:00-07:00",
+        "status": "final"
+      },
+      {
+        "name": "Heart rate",
+        "loinc": "8867-4",
+        "value": "92",
+        "unit": "/min",
+        "time": "2026-05-18T09:20:00-07:00",
+        "status": "final"
+      },
+      {
+        "name": "Blood Pressure",
+        "loinc": "85354-9",
+        "value": "148/88",
+        "unit": "mm[Hg]",
+        "time": "2026-05-18T09:20:00-07:00",
+        "status": "final"
+      },
+      {
+        "name": "Respiratory rate",
+        "loinc": "9279-1",
+        "value": "20",
+        "unit": "/min",
+        "time": "2026-05-18T09:20:00-07:00",
+        "status": "final"
+      },
+      {
+        "name": "Oxygen saturation",
+        "loinc": "2708-6",
+        "value": "95",
+        "unit": "%",
+        "time": "2026-05-18T09:20:00-07:00",
+        "status": "final"
+      },
+      {
+        "name": "Body temperature",
+        "loinc": "8310-5",
+        "value": "36.8",
+        "unit": "Cel",
+        "time": "2026-05-18T09:20:00-07:00",
+        "status": "final"
+      }
+    ],
+    "medications": [
+      {
+        "name": "Aspirin",
+        "dose": "75 mg",
+        "route": "PO",
+        "frequency": "once daily",
+        "class": "antiplatelet",
+        "status": "active"
+      },
+      {
+        "name": "Lisinopril",
+        "dose": "10 mg",
+        "route": "PO",
+        "frequency": "once daily",
+        "class": "ACE inhibitor",
+        "status": "active"
+      },
+      {
+        "name": "Atorvastatin",
+        "dose": "40 mg",
+        "route": "PO",
+        "frequency": "once nightly",
+        "class": "statin",
+        "status": "active"
+      },
+      {
+        "name": "Bisoprolol",
+        "dose": "2.5 mg",
+        "route": "PO",
+        "frequency": "once daily",
+        "class": "beta blocker",
+        "status": "active"
+      },
+      {
+        "name": "GTN spray",
+        "dose": "400 mcg",
+        "route": "SL",
+        "frequency": "as required",
+        "class": "nitrate",
+        "status": "active"
+      }
+    ],
+    "noteSections": {
+      "subjective": "58-year-old man presenting with a two-hour history of central, tight chest pain radiating to the left arm, associated with shortness of breath and mild sweating. Background of hypertension and ischaemic heart disease. Nut allergy. On lisinopril and aspirin at home. Pain partially eased since arrival; still short of breath on exertion.",
+      "objective": "NEWS 2. Vitals: HR 92/min, BP 148/88 mmHg, RR 20/min, SpO2 95% on room air, Temp 36.8°C. Chest clear. Heart sounds normal, no murmurs. Chest X-Ray normal. Admission bloods pending. Troponin I pending on the initial sample.",
+      "assessment": "Central chest pain with shortness of breath on a background of ischaemic heart disease and hypertension — acute coronary syndrome must be excluded. Haemodynamically stable, NEWS 2. Awaiting the initial Troponin I and 12-lead ECG to assess for myocardial injury.",
+      "plan": "Send a Troponin I on the initial sample (reason: chest pain) and obtain a 12-lead ECG now to assess for myocardial injury. Order a Full Blood Count with U&Es for baseline haematology and renal function. Order a COVID PCR swab and a Chest X-Ray as part of the acute admission screen. Escalate immediately for a raised troponin, ongoing chest pain, dynamic ECG changes, or a rising NEWS."
+    },
+    "guidance": {
+      "chest pain": {
+        "title": "Acute Chest Pain / Suspected ACS Pathway",
+        "version": "v3.1",
+        "excerpt": "For suspected acute coronary syndrome: obtain a 12-lead ECG within 10 minutes of arrival and a Troponin I on the initial sample, with a repeat Troponin I at 3 hours. Give aspirin 300 mg as a loading dose if there is no contraindication and the patient is not already loaded. Provide analgesia and consider GTN for ongoing ischaemic pain. Arrange urgent Cardiology review for any raised or dynamic troponin, and consider anticoagulation (e.g. enoxaparin 1 mg/kg) once ACS is confirmed and bleeding risk assessed."
+      },
+      "acs": {
+        "title": "Acute Coronary Syndrome — Initial Management",
+        "version": "v3.1",
+        "excerpt": "Confirmed or high-suspicion ACS: aspirin 300 mg loading dose (if no contraindication), a second antiplatelet per local pathway, and anticoagulation such as enoxaparin 1 mg/kg subcutaneously after assessing renal function and bleeding risk. Serial Troponin I (repeat at 3 hours), continuous cardiac monitoring, and urgent Cardiology review to determine invasive vs conservative strategy. Every drug and dose is confirmed by the responsible clinician before administration."
+      },
+      "troponin": {
+        "title": "Raised Troponin — Interpretation & Escalation",
+        "version": "v3.1",
+        "excerpt": "A markedly raised Troponin I in the context of chest pain is a finding consistent with myocardial injury, not a standalone diagnosis — interpret alongside the ECG and clinical picture. Repeat the Troponin I at 3 hours to establish the trend, start continuous cardiac monitoring, and escalate to Cardiology urgently. Do not delay a loading dose of aspirin where indicated and not contraindicated."
+      }
+    }
+  }
+}

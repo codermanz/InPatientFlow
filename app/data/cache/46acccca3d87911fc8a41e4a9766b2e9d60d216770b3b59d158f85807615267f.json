@@ -1,0 +1,292 @@
+{
+  "namespace": "recommend",
+  "key": "46acccca3d87911fc8a41e4a9766b2e9d60d216770b3b59d158f85807615267f",
+  "createdAt": "2026-07-18T23:09:40.295Z",
+  "model": "claude-sonnet-5",
+  "output": {
+    "suggestion": {
+      "id": "rec-pt-1234567",
+      "resultEventId": "",
+      "headline": "Troponin I markedly raised (4274 ng/L) with ongoing chest pain — no ACS treatment yet",
+      "summary": "Patient with known IHD/hypertension presented with central chest pain and shortness of breath. Initial Troponin I returned at 4274 ng/L (ref <14), and the 12-lead ECG shows sinus rhythm with minor ST-T changes in the anterior leads — findings consistent with / concerning for myocardial injury, not yet actioned with any ACS treatment order. Vitals currently stable (HR 92, BP 148/88, NEWS 2 per note). Current medications include Aspirin only at a prophylactic 75 mg dose (not a loading dose). The note plan shows the initial troponin/ECG were sent but no repeat troponin, cardiology review, or ACS treatment has been ordered. Per the trust Acute Chest Pain / Suspected ACS Pathway (v3.1): repeat Troponin I at 3 hours, give aspirin 300 mg loading dose if no contraindication and not already loaded, arrange urgent Cardiology review for raised/dynamic troponin, and consider continuous cardiac monitoring; anticoagulation (e.g. enoxaparin 1 mg/kg) to be considered once ACS is confirmed and bleeding risk assessed — this is deferred pending cardiology input given it is not yet confirmed. This is a finding requiring urgent clinician review and action, not a final diagnosis.",
+      "proposedActions": [
+        {
+          "id": "rec-pt-1234567-1",
+          "title": "Repeat Troponin I at 3 hours",
+          "detail": "Initial Troponin I markedly elevated at 4274 ng/L (ref <14); trust ACS pathway (v3.1) recommends a repeat sample at 3 hours to assess trend.",
+          "selectedByDefault": true,
+          "workflowId": "order-lab",
+          "workflowLabel": "Order lab / bloods"
+        },
+        {
+          "id": "rec-pt-1234567-2",
+          "title": "Urgent Cardiology Review",
+          "detail": "Raised troponin with anterior ST-T changes on ECG and ongoing chest pain — pathway specifies urgent Cardiology review for any raised or dynamic troponin.",
+          "selectedByDefault": true,
+          "workflowId": "specialty-consult",
+          "workflowLabel": "Request Cardiology review"
+        },
+        {
+          "id": "rec-pt-1234567-3",
+          "title": "Aspirin 300 mg loading dose (if no contraindication)",
+          "detail": "Patient currently only on prophylactic Aspirin 75 mg, i.e. not loaded. Pathway advises 300 mg loading dose if no contraindication and not already loaded — clinician to confirm before administration.",
+          "selectedByDefault": true,
+          "workflowId": "medication-administer",
+          "workflowLabel": "Administer medication (clinician-gated)"
+        },
+        {
+          "id": "rec-pt-1234567-4",
+          "title": "Initiate continuous cardiac monitoring",
+          "detail": "Suspected ACS with raised troponin and anterior ST-T changes on ECG warrants continuous telemetry monitoring per the chest pain pathway pending cardiology review.",
+          "selectedByDefault": true,
+          "workflowId": "cardiac-monitoring",
+          "workflowLabel": "Initiate cardiac monitoring"
+        },
+        {
+          "id": "rec-pt-1234567-5",
+          "title": "Schedule reassessment once repeat troponin returns",
+          "detail": "Note plan states escalation is required for a raised troponin, ongoing chest pain, dynamic ECG changes, or rising NEWS — schedule reassessment to review repeat troponin trend and clinical status.",
+          "selectedByDefault": false,
+          "workflowId": "reassess-recheck",
+          "workflowLabel": "Schedule reassessment / recheck"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "lab",
+          "label": "Lab: troponin",
+          "excerpt": "Troponin I: 4274 ng/L @ 2026-05-18T11:47:00-07:00"
+        },
+        {
+          "type": "lab",
+          "label": "Lab: ECG",
+          "excerpt": "12-Lead ECG: Sinus rhythm with minor ST-T changes in the anterior leads @ 2026-05-18T11:52:00-07:00"
+        },
+        {
+          "type": "lab",
+          "label": "Lab: heart rate",
+          "excerpt": "Heart rate: 92 /min @ 2026-05-18T09:20:00-07:00"
+        },
+        {
+          "type": "lab",
+          "label": "Lab: blood pressure",
+          "excerpt": "Blood Pressure: 148/88 mm[Hg] @ 2026-05-18T09:20:00-07:00"
+        },
+        {
+          "type": "mar",
+          "label": "Active medications",
+          "excerpt": "Aspirin 75 mg (active); Lisinopril 10 mg (active); Atorvastatin 40 mg (active); Bisoprolol 2.5 mg (active); GTN spray 400 mcg (active)"
+        },
+        {
+          "type": "progress_note",
+          "label": "Note: plan",
+          "excerpt": "Send a Troponin I on the initial sample (reason: chest pain) and obtain a 12-lead ECG now to assess for myocardial injury. Order a Full Blood Count with U&Es for baseline haematology and renal function. Order a COVID PCR swab and a Chest X…"
+        },
+        {
+          "type": "note",
+          "label": "Note: assessment",
+          "excerpt": "Central chest pain with shortness of breath on a background of ischaemic heart disease and hypertension — acute coronary syndrome must be excluded. Haemodynamically stable, NEWS 2. Awaiting the initial Troponin I and 12-lead ECG to assess …"
+        },
+        {
+          "type": "protocol",
+          "label": "Hospital protocol",
+          "excerpt": "Acute Chest Pain / Suspected ACS Pathway (v3.1): For suspected acute coronary syndrome: obtain a 12-lead ECG within 10 minutes of arrival and a Troponin I on the initial sample, with a repeat Troponin I at 3 hours. Give aspirin 300 mg as a loading dose if there is no contraindic…"
+        }
+      ],
+      "guardrails": [
+        "This is a finding/concern consistent with possible myocardial injury, not a confirmed final diagnosis — clinician to correlate clinically.",
+        "Every drug and dose (aspirin loading dose, any future anticoagulation) is confirmed by the clinician before administration; nothing is given autonomously.",
+        "Aspirin loading dose should only be given after checking for contraindications (e.g. active bleeding, allergy).",
+        "Anticoagulation (e.g. enoxaparin) is not proposed now; per pathway it should only be considered once ACS is confirmed and bleeding risk assessed, ideally with cardiology input.",
+        "Nothing is executed until the clinician taps Confirm & Execute on each action."
+      ],
+      "trace": [
+        {
+          "order": 1,
+          "tool": "search_observations",
+          "input": "query \"troponin\"",
+          "summary": "Troponin I: 4274 ng/L @ 2026-05-18T11:47:00-07:00"
+        },
+        {
+          "order": 2,
+          "tool": "search_observations",
+          "input": "query \"ECG\"",
+          "summary": "12-Lead ECG: Sinus rhythm with minor ST-T changes in the anterior leads @ 2026-05-18T11:52:00-07:00"
+        },
+        {
+          "order": 3,
+          "tool": "search_observations",
+          "input": "query \"heart rate\"",
+          "summary": "Heart rate: 92 /min @ 2026-05-18T09:20:00-07:00"
+        },
+        {
+          "order": 4,
+          "tool": "search_observations",
+          "input": "query \"blood pressure\"",
+          "summary": "Blood Pressure: 148/88 mm[Hg] @ 2026-05-18T09:20:00-07:00"
+        },
+        {
+          "order": 5,
+          "tool": "get_medications",
+          "input": "active medication list",
+          "summary": "Aspirin 75 mg (active); Lisinopril 10 mg (active); Atorvastatin 40 mg (active); Bisoprolol 2.5 mg (active); GTN spray 400 mcg (active)"
+        },
+        {
+          "order": 6,
+          "tool": "get_note_section",
+          "input": "note section \"plan\"",
+          "summary": "Send a Troponin I on the initial sample (reason: chest pain) and obtain a 12-lead ECG now to assess for myocardial injury. Order a Full Blood Count with U&Es for baseline haematology and renal functi…"
+        },
+        {
+          "order": 7,
+          "tool": "get_note_section",
+          "input": "note section \"assessment\"",
+          "summary": "Central chest pain with shortness of breath on a background of ischaemic heart disease and hypertension — acute coronary syndrome must be excluded. Haemodynamically stable, NEWS 2. Awaiting the initi…"
+        },
+        {
+          "order": 8,
+          "tool": "get_local_guidance",
+          "input": "topic \"chest pain\"",
+          "summary": "Acute Chest Pain / Suspected ACS Pathway (v3.1): For suspected acute coronary syndrome: obtain a 12-lead ECG within 10 minutes of arrival and a Troponin I on the initial sample, with a repeat Troponi…"
+        },
+        {
+          "order": 9,
+          "tool": "search_workflows",
+          "input": "query \"repeat troponin\"",
+          "summary": "order-lab: Order lab / bloods — Place an order for a laboratory test or panel (e.g. repeat Troponin I, Full Blood Count, U&Es, COVID PCR).\nspecialty-consult: Request Cardiology review — Request a spe…"
+        },
+        {
+          "order": 10,
+          "tool": "search_workflows",
+          "input": "query \"administer aspirin loading dose\"",
+          "summary": "medication-administer: Administer medication (clinician-gated) — Prepare a drug and dose for administration (e.g. aspirin 300 mg loading dose, enoxaparin 1 mg/kg). Every drug and dose is confirmed by…"
+        },
+        {
+          "order": 11,
+          "tool": "search_workflows",
+          "input": "query \"cardiac monitoring\"",
+          "summary": "cardiac-monitoring: Initiate cardiac monitoring — Start continuous cardiac (telemetry) monitoring given suspected acute coronary syndrome.\nreassess-recheck: Schedule reassessment / recheck — Schedule…"
+        },
+        {
+          "order": 12,
+          "tool": "search_workflows",
+          "input": "query \"12-lead ECG\"",
+          "summary": "ecg: Obtain 12-lead ECG — Order and record a 12-lead ECG to assess for ischaemic or dynamic changes."
+        }
+      ]
+    },
+    "trace": [
+      {
+        "step": 1,
+        "tool": "search_observations",
+        "input": {
+          "patientId": "pt-1234567",
+          "query": "troponin"
+        },
+        "observation": "Troponin I: 4274 ng/L @ 2026-05-18T11:47:00-07:00"
+      },
+      {
+        "step": 2,
+        "tool": "search_observations",
+        "input": {
+          "patientId": "pt-1234567",
+          "query": "ECG"
+        },
+        "observation": "12-Lead ECG: Sinus rhythm with minor ST-T changes in the anterior leads @ 2026-05-18T11:52:00-07:00"
+      },
+      {
+        "step": 3,
+        "tool": "search_observations",
+        "input": {
+          "patientId": "pt-1234567",
+          "query": "heart rate"
+        },
+        "observation": "Heart rate: 92 /min @ 2026-05-18T09:20:00-07:00"
+      },
+      {
+        "step": 4,
+        "tool": "search_observations",
+        "input": {
+          "patientId": "pt-1234567",
+          "query": "blood pressure"
+        },
+        "observation": "Blood Pressure: 148/88 mm[Hg] @ 2026-05-18T09:20:00-07:00"
+      },
+      {
+        "step": 5,
+        "tool": "get_medications",
+        "input": {
+          "patientId": "pt-1234567"
+        },
+        "observation": "Aspirin 75 mg (active); Lisinopril 10 mg (active); Atorvastatin 40 mg (active); Bisoprolol 2.5 mg (active); GTN spray 400 mcg (active)"
+      },
+      {
+        "step": 6,
+        "tool": "get_note_section",
+        "input": {
+          "encounterId": "pt-1234567",
+          "section": "plan"
+        },
+        "observation": "Send a Troponin I on the initial sample (reason: chest pain) and obtain a 12-lead ECG now to assess for myocardial injury. Order a Full Blood Count with U&Es for baseline haematology and renal function. Order a COVID PCR swab and a Chest X-Ray as part of the acute admission screen. Escalate immediately for a raised troponin, ongoing chest pain, dynamic ECG changes, or a rising NEWS."
+      },
+      {
+        "step": 7,
+        "tool": "get_note_section",
+        "input": {
+          "encounterId": "pt-1234567",
+          "section": "assessment"
+        },
+        "observation": "Central chest pain with shortness of breath on a background of ischaemic heart disease and hypertension — acute coronary syndrome must be excluded. Haemodynamically stable, NEWS 2. Awaiting the initial Troponin I and 12-lead ECG to assess for myocardial injury."
+      },
+      {
+        "step": 8,
+        "tool": "get_local_guidance",
+        "input": {
+          "topic": "chest pain"
+        },
+        "observation": "Acute Chest Pain / Suspected ACS Pathway (v3.1): For suspected acute coronary syndrome: obtain a 12-lead ECG within 10 minutes of arrival and a Troponin I on the initial sample, with a repeat Troponin I at 3 hours. Give aspirin 300 mg as a loading dose if there is no contraindication and the patient is not already loaded. Provide analgesia and consider GTN for ongoing ischaemic pain. Arrange urgent Cardiology review for any raised or dynamic troponin, and consider anticoagulation (e.g. enoxaparin 1 mg/kg) once ACS is confirmed and bleeding risk assessed."
+      },
+      {
+        "step": 9,
+        "tool": "search_workflows",
+        "input": {
+          "query": "repeat troponin"
+        },
+        "observation": "order-lab: Order lab / bloods — Place an order for a laboratory test or panel (e.g. repeat Troponin I, Full Blood Count, U&Es, COVID PCR).\nspecialty-consult: Request Cardiology review — Request a specialty consult or review (e.g. Cardiology review for a raised troponin / suspected ACS).\nreassess-recheck: Schedule reassessment / recheck — Schedule a clinical reassessment or re-evaluate after intervention (e.g. review the repeat Troponin I once it returns)."
+      },
+      {
+        "step": 10,
+        "tool": "search_workflows",
+        "input": {
+          "query": "administer aspirin loading dose"
+        },
+        "observation": "medication-administer: Administer medication (clinician-gated) — Prepare a drug and dose for administration (e.g. aspirin 300 mg loading dose, enoxaparin 1 mg/kg). Every drug and dose is confirmed by the clinician before it is administered."
+      },
+      {
+        "step": 11,
+        "tool": "search_workflows",
+        "input": {
+          "query": "cardiac monitoring"
+        },
+        "observation": "cardiac-monitoring: Initiate cardiac monitoring — Start continuous cardiac (telemetry) monitoring given suspected acute coronary syndrome.\nreassess-recheck: Schedule reassessment / recheck — Schedule a clinical reassessment or re-evaluate after intervention (e.g. review the repeat Troponin I once it returns)."
+      },
+      {
+        "step": 12,
+        "tool": "search_workflows",
+        "input": {
+          "query": "12-lead ECG"
+        },
+        "observation": "ecg: Obtain 12-lead ECG — Order and record a 12-lead ECG to assess for ischaemic or dynamic changes."
+      }
+    ],
+    "usage": {
+      "input_tokens": 72652,
+      "output_tokens": 2627,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0
+    },
+    "model": "claude-sonnet-5",
+    "iterations": 12,
+    "hitMaxIterations": true
+  }
+}

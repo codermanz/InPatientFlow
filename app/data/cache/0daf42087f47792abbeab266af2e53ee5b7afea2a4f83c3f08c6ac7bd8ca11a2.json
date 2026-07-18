@@ -1,0 +1,133 @@
+{
+  "namespace": "extract",
+  "key": "0daf42087f47792abbeab266af2e53ee5b7afea2a4f83c3f08c6ac7bd8ca11a2",
+  "createdAt": "2026-07-18T23:08:08.955Z",
+  "model": "claude-sonnet-5",
+  "output": {
+    "tasks": [
+      {
+        "id": "send-troponin-i",
+        "patientId": "pt-1234567",
+        "encounterId": "enc-js-1234567",
+        "title": "Send Troponin I",
+        "category": "requests",
+        "timing": "now, initial sample",
+        "reason": "chest pain",
+        "status": "proposed",
+        "origin": "extracted",
+        "evidence": [
+          {
+            "type": "note",
+            "label": "Plan: Chest pain",
+            "excerpt": "Send a Troponin I on the initial sample (reason: chest pain) to assess for myocardial injury."
+          },
+          {
+            "type": "transcript",
+            "label": "Transcript",
+            "excerpt": "Let's send a Troponin I on this first sample — that's the marker for heart muscle damage — the reason being the chest pain."
+          }
+        ]
+      },
+      {
+        "id": "obtain-12-lead-ecg",
+        "patientId": "pt-1234567",
+        "encounterId": "enc-js-1234567",
+        "title": "Obtain 12-lead ECG",
+        "category": "requests",
+        "timing": "now",
+        "reason": "assess for ischaemic changes",
+        "status": "proposed",
+        "origin": "extracted",
+        "evidence": [
+          {
+            "type": "note",
+            "label": "Plan: Chest pain",
+            "excerpt": "Obtain a 12-lead ECG now to look for ischaemic changes."
+          },
+          {
+            "type": "transcript",
+            "label": "Transcript",
+            "excerpt": "And get a 12-lead ECG done now."
+          }
+        ]
+      },
+      {
+        "id": "order-fbc-and-u-es",
+        "patientId": "pt-1234567",
+        "encounterId": "enc-js-1234567",
+        "title": "Order FBC and U&Es",
+        "category": "requests",
+        "timing": "today",
+        "reason": "baseline haematology and renal function",
+        "status": "proposed",
+        "origin": "extracted",
+        "evidence": [
+          {
+            "type": "note",
+            "label": "Plan: Chest pain",
+            "excerpt": "Order a Full Blood Count with U&Es to check baseline haematology and renal function before contrast or anticoagulation."
+          },
+          {
+            "type": "transcript",
+            "label": "Transcript",
+            "excerpt": "Also send a Full Blood Count with U&Es so we've got baseline bloods and kidney function."
+          }
+        ]
+      },
+      {
+        "id": "order-covid-pcr-swab",
+        "patientId": "pt-1234567",
+        "encounterId": "enc-js-1234567",
+        "title": "Order COVID PCR swab",
+        "category": "requests",
+        "timing": "today, admission screen",
+        "reason": "acute admission screen",
+        "status": "proposed",
+        "origin": "extracted",
+        "evidence": [
+          {
+            "type": "note",
+            "label": "Plan: Shortness of breath",
+            "excerpt": "Order a COVID PCR swab as part of the acute admission screen."
+          },
+          {
+            "type": "transcript",
+            "label": "Transcript",
+            "excerpt": "And as part of the admission screen, please add a COVID PCR swab, and a Chest X-Ray to make sure there's nothing in the lungs."
+          }
+        ]
+      },
+      {
+        "id": "order-chest-x-ray",
+        "patientId": "pt-1234567",
+        "encounterId": "enc-js-1234567",
+        "title": "Order Chest X-Ray",
+        "category": "requests",
+        "timing": "today",
+        "reason": "exclude acute respiratory cause",
+        "status": "proposed",
+        "origin": "extracted",
+        "evidence": [
+          {
+            "type": "note",
+            "label": "Plan: Shortness of breath",
+            "excerpt": "Order a Chest X-Ray to exclude an acute respiratory cause (reviewed — reported normal)."
+          },
+          {
+            "type": "transcript",
+            "label": "Transcript",
+            "excerpt": "and a Chest X-Ray to make sure there's nothing in the lungs."
+          }
+        ]
+      }
+    ],
+    "usage": {
+      "input_tokens": 3600,
+      "output_tokens": 1044,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0
+    },
+    "model": "claude-sonnet-5",
+    "repaired": false
+  }
+}

@@ -218,3 +218,10 @@ __marimo__/
 .streamlit/secrets.toml
 
 .DS_Store
+
+# Node / JS
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+npm-debug.log*

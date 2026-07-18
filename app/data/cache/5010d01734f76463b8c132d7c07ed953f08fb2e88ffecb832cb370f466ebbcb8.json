@@ -1,0 +1,146 @@
+{
+  "namespace": "reassess",
+  "key": "5010d01734f76463b8c132d7c07ed953f08fb2e88ffecb832cb370f466ebbcb8",
+  "createdAt": "2026-07-18T23:10:03.724Z",
+  "model": "claude-sonnet-5",
+  "output": {
+    "suggestion": {
+      "id": "reassess-res-troponin-js-recheck",
+      "resultEventId": "res-troponin-js-recheck",
+      "headline": "Repeat troponin rising further (4274→5100 ng/L); ACS pathway continues",
+      "summary": "3-hour repeat Troponin I remains markedly elevated and has risen from 4274 ng/L to 5100 ng/L (ref <14), consistent with ongoing/evolving myocardial injury rather than resolution. Patient is already on the ACS pathway with Cardiology involved and on aspirin 75 mg, bisoprolol, atorvastatin, lisinopril and PRN GTN. Per trust ACS guidance (v3.1), this trend supports continuing serial troponin monitoring, continuous cardiac (telemetry) monitoring, and urgent Cardiology review to determine invasive vs conservative strategy. No new anomaly flag is being raised here — this is a continuation/re-assessment of the previously actioned critical result — but the lack of improvement means the corrective pathway should continue rather than be stood down. Any escalation of antiplatelet/anticoagulant therapy (e.g. second antiplatelet, enoxaparin 1 mg/kg per pathway) remains a decision for the responsible clinician after reviewing bleeding risk and renal function.",
+      "proposedActions": [
+        {
+          "id": "reassess-res-troponin-js-recheck-1",
+          "title": "Cardiology Review",
+          "detail": "Troponin continuing to rise (4274→5100 ng/L) 3 hours apart; per ACS pathway, urgent Cardiology review to determine invasive vs conservative strategy — Cardiology already managing, recommend re-review in light of rising trend.",
+          "selectedByDefault": true,
+          "workflowId": "specialty-consult",
+          "workflowLabel": "Request Cardiology review"
+        },
+        {
+          "id": "reassess-res-troponin-js-recheck-2",
+          "title": "Continue Continuous Cardiac Monitoring",
+          "detail": "Per ACS pathway guidance, continuous cardiac (telemetry) monitoring should continue given the non-resolving troponin rise.",
+          "selectedByDefault": true,
+          "workflowId": "cardiac-monitoring",
+          "workflowLabel": "Initiate cardiac monitoring"
+        },
+        {
+          "id": "reassess-res-troponin-js-recheck-3",
+          "title": "Schedule Next Troponin Recheck",
+          "detail": "Serial Troponin I recommended per ACS pathway; schedule the next recheck to confirm whether the rise is plateauing or continuing to evolve.",
+          "selectedByDefault": true,
+          "workflowId": "reassess-recheck",
+          "workflowLabel": "Schedule reassessment / recheck"
+        }
+      ],
+      "evidence": [
+        {
+          "type": "lab",
+          "label": "Lab: troponin",
+          "excerpt": "Troponin I: 4274 ng/L @ 2026-05-18T11:47:00-07:00"
+        },
+        {
+          "type": "mar",
+          "label": "Active medications",
+          "excerpt": "Aspirin 75 mg (active); Lisinopril 10 mg (active); Atorvastatin 40 mg (active); Bisoprolol 2.5 mg (active); GTN spray 400 mcg (active)"
+        },
+        {
+          "type": "protocol",
+          "label": "Hospital protocol",
+          "excerpt": "Acute Coronary Syndrome — Initial Management (v3.1): Confirmed or high-suspicion ACS: aspirin 300 mg loading dose (if no contraindication), a second antiplatelet per local pathway, and anticoagulation such as enoxaparin 1 mg/kg subcutaneously after assessing renal function and b…"
+        }
+      ],
+      "guardrails": [
+        "This is a re-assessment of a trend, not a new anomaly or final diagnosis",
+        "Any medication change (e.g. second antiplatelet, enoxaparin) requires clinician confirmation of dose after assessing bleeding/renal risk before administration",
+        "Nothing is executed until the clinician taps Confirm & Execute"
+      ],
+      "trace": [
+        {
+          "order": 1,
+          "tool": "search_observations",
+          "input": "query \"troponin\"",
+          "summary": "Troponin I: 4274 ng/L @ 2026-05-18T11:47:00-07:00"
+        },
+        {
+          "order": 2,
+          "tool": "get_medications",
+          "input": "active medication list",
+          "summary": "Aspirin 75 mg (active); Lisinopril 10 mg (active); Atorvastatin 40 mg (active); Bisoprolol 2.5 mg (active); GTN spray 400 mcg (active)"
+        },
+        {
+          "order": 3,
+          "tool": "get_local_guidance",
+          "input": "topic \"acs\"",
+          "summary": "Acute Coronary Syndrome — Initial Management (v3.1): Confirmed or high-suspicion ACS: aspirin 300 mg loading dose (if no contraindication), a second antiplatelet per local pathway, and anticoagulatio…"
+        },
+        {
+          "order": 4,
+          "tool": "search_workflows",
+          "input": "query \"cardiology review\"",
+          "summary": "specialty-consult: Request Cardiology review — Request a specialty consult or review (e.g. Cardiology review for a raised troponin / suspected ACS).\nreassess-recheck: Schedule reassessment / recheck …"
+        },
+        {
+          "order": 5,
+          "tool": "search_workflows",
+          "input": "query \"cardiac monitoring\"",
+          "summary": "cardiac-monitoring: Initiate cardiac monitoring — Start continuous cardiac (telemetry) monitoring given suspected acute coronary syndrome.\nreassess-recheck: Schedule reassessment / recheck — Schedule…"
+        }
+      ]
+    },
+    "trace": [
+      {
+        "step": 1,
+        "tool": "search_observations",
+        "input": {
+          "patientId": "pt-1234567",
+          "query": "troponin"
+        },
+        "observation": "Troponin I: 4274 ng/L @ 2026-05-18T11:47:00-07:00"
+      },
+      {
+        "step": 2,
+        "tool": "get_medications",
+        "input": {
+          "patientId": "pt-1234567"
+        },
+        "observation": "Aspirin 75 mg (active); Lisinopril 10 mg (active); Atorvastatin 40 mg (active); Bisoprolol 2.5 mg (active); GTN spray 400 mcg (active)"
+      },
+      {
+        "step": 3,
+        "tool": "get_local_guidance",
+        "input": {
+          "topic": "acs"
+        },
+        "observation": "Acute Coronary Syndrome — Initial Management (v3.1): Confirmed or high-suspicion ACS: aspirin 300 mg loading dose (if no contraindication), a second antiplatelet per local pathway, and anticoagulation such as enoxaparin 1 mg/kg subcutaneously after assessing renal function and bleeding risk. Serial Troponin I (repeat at 3 hours), continuous cardiac monitoring, and urgent Cardiology review to determine invasive vs conservative strategy. Every drug and dose is confirmed by the responsible clinician before administration."
+      },
+      {
+        "step": 4,
+        "tool": "search_workflows",
+        "input": {
+          "query": "cardiology review"
+        },
+        "observation": "specialty-consult: Request Cardiology review — Request a specialty consult or review (e.g. Cardiology review for a raised troponin / suspected ACS).\nreassess-recheck: Schedule reassessment / recheck — Schedule a clinical reassessment or re-evaluate after intervention (e.g. review the repeat Troponin I once it returns)."
+      },
+      {
+        "step": 5,
+        "tool": "search_workflows",
+        "input": {
+          "query": "cardiac monitoring"
+        },
+        "observation": "cardiac-monitoring: Initiate cardiac monitoring — Start continuous cardiac (telemetry) monitoring given suspected acute coronary syndrome.\nreassess-recheck: Schedule reassessment / recheck — Schedule a clinical reassessment or re-evaluate after intervention (e.g. review the repeat Troponin I once it returns)."
+      }
+    ],
+    "usage": {
+      "input_tokens": 30506,
+      "output_tokens": 1392,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 0
+    },
+    "model": "claude-sonnet-5",
+    "iterations": 6,
+    "hitMaxIterations": false
+  }
+}

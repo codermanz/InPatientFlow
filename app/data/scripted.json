@@ -1,0 +1,86 @@
+{
+  "resultEvent": {
+    "id": "res-troponin-js",
+    "taskId": "task-troponin-i",
+    "patientId": "pt-1234567",
+    "name": "Troponin I",
+    "value": "4274",
+    "unit": "ng/L",
+    "refRange": "< 14 ng/L",
+    "status": "high",
+    "returnedAt": "2026-05-18T11:47:00-07:00",
+    "context": "Initial Troponin I markedly elevated in a patient presenting with central chest pain.",
+    "requiresReview": true,
+    "interpretation": "Markedly raised troponin I in the context of chest pain."
+  },
+  "notification": {
+    "id": "notif-troponin-js",
+    "patientId": "pt-1234567",
+    "resultEventId": "res-troponin-js",
+    "title": "Needs urgent attention – Troponin",
+    "body": "Hospital No. 1234567",
+    "createdAt": "2026-05-18T11:47:00-07:00",
+    "deepLink": "/results/res-troponin-js",
+    "urgent": true
+  },
+  "timeline": [
+    {
+      "id": "tl-troponin-initial",
+      "patientId": "pt-1234567",
+      "ts": "2026-05-18T11:47:00-07:00",
+      "label": "Troponin I (initial)",
+      "type": "result",
+      "note": "4274 ng/L"
+    },
+    {
+      "id": "tl-ecg",
+      "patientId": "pt-1234567",
+      "ts": "2026-05-18T11:52:00-07:00",
+      "label": "12-Lead ECG",
+      "type": "administration",
+      "note": "Completed"
+    },
+    {
+      "id": "tl-cardiology-review",
+      "patientId": "pt-1234567",
+      "ts": "2026-05-18T12:10:00-07:00",
+      "label": "Cardiology Review",
+      "type": "administration",
+      "note": "Completed"
+    },
+    {
+      "id": "tl-repeat-troponin",
+      "patientId": "pt-1234567",
+      "ts": "2026-05-18T14:45:00-07:00",
+      "label": "Repeat Troponin I",
+      "type": "order",
+      "note": "Pending"
+    }
+  ],
+  "actionsTaken": [
+    "Aspirin loading dose of 300 mg prescribed",
+    "Enoxaparin 1 mg/kg prescribed"
+  ],
+  "activity": {
+    "completedQuietly": 4,
+    "needsAttention": 1,
+    "resultPending": 1
+  },
+  "recheck": {
+    "resultEvent": {
+      "id": "res-troponin-js-recheck",
+      "taskId": "task-troponin-i",
+      "patientId": "pt-1234567",
+      "name": "Troponin I",
+      "value": "5100",
+      "unit": "ng/L",
+      "refRange": "< 14 ng/L",
+      "status": "high",
+      "priorValue": "4274",
+      "returnedAt": "2026-05-18T14:45:00-07:00",
+      "context": "Repeat Troponin I at 3 hours remains markedly elevated (4274 → 5100 ng/L), consistent with evolving myocardial injury; Cardiology managing on the ACS pathway.",
+      "requiresReview": false,
+      "interpretation": "Troponin I remains markedly raised on the 3-hour repeat, consistent with evolving myocardial injury."
+    }
+  }
+}

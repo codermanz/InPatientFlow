@@ -1,0 +1,59 @@
+{
+  "ward": "Ward 7A",
+  "clinician": "Dr. Who",
+  "date": "Sat, 18 May 09:20",
+  "counts": {
+    "patients": 18,
+    "tasks": 37
+  },
+  "patients": [
+    {
+      "id": "pt-1234567",
+      "hospitalNo": "1234567",
+      "bed": "Bed 12",
+      "initials": "JS",
+      "ageSex": "58M",
+      "name": "John Stephens",
+      "ward": "Ward 7A",
+      "specialty": "Cardiology",
+      "status": "need_action",
+      "taskCount": 5
+    },
+    {
+      "id": "pt-2345678",
+      "hospitalNo": "2345678",
+      "bed": "Bed 8",
+      "initials": "SA",
+      "ageSex": "74F",
+      "name": "Sofia Andersson",
+      "ward": "Ward 7A",
+      "specialty": "Respiratory",
+      "status": "need_review",
+      "taskCount": 2
+    },
+    {
+      "id": "pt-3456789",
+      "hospitalNo": "3456789",
+      "bed": "Bed 3",
+      "initials": "MJ",
+      "ageSex": "66M",
+      "name": "Marcus Jones",
+      "ward": "Ward 7A",
+      "specialty": "General Medicine",
+      "status": "unchanged",
+      "taskCount": 0
+    },
+    {
+      "id": "pt-4567890",
+      "hospitalNo": "4567890",
+      "bed": "Bed 15",
+      "initials": "DB",
+      "ageSex": "81F",
+      "name": "Dorothy Baker",
+      "ward": "Ward 7A",
+      "specialty": "Geriatrics",
+      "status": "need_review",
+      "taskCount": 3
+    }
+  ]
+}
